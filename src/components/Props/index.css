@@ -1,0 +1,17 @@
+.image {
+  width: 275px;
+  height: 154px;
+}
+
+.text{
+  text-align: justify;
+}
+
+.card{
+  border: 1px solid black;
+  width: 275px;
+}
+
+.textWrapper{
+  padding: 6px;
+}
