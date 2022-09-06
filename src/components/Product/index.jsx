@@ -13,7 +13,7 @@ const Product = props => {
   };
 
   const handleMinus = () => {
-    if (quantity > 0) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
