@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import Product from './components/Product';
+import LifeCycle from './components/LifeCycleComponent';
 
 const App = () => {
   return(
-    <Product />
+    <LifeCycle />
   );
 };
 
