@@ -1,0 +1,63 @@
+.card{
+  width: 300px;
+  border: 1px solid black;
+  margin: 10px;
+}
+
+.imageProduct {
+  height: 150px;
+  display: flex;
+  border-bottom: 1px solid black;
+}
+
+.image {
+  height: 150px;
+  margin: 0 auto;
+}
+
+.descriptionProduct {
+  padding: 10px;
+}
+
+.buyProduct{
+  padding: 10px;
+}
+
+.cardWrapper{
+  display: flex;
+  justify-content: space-around;
+}
+
+.cartWrapper {
+  border: 1px solid black;
+  width: 100px;
+  border-radius: 100%;
+  padding: 15px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.cart-counter{
+  width: 10px;
+  border-radius: 100%;
+  padding: 5px;
+  background-color: greenyellow;
+  border: 1px solid white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 15px;
+}
+
+.cart-image {
+  width: 100px;
+}
+
+.buyProduct{
+  display: flex;
+  justify-content: center;
+}
+
+.buyProduct input {
+  text-align: center;
+}
