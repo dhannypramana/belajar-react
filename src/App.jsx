@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
-import LifeCycle from './components/LifeCycleComponent';
+import ConditionalRendering from './components/ConditionalRendering';
 
 const App = () => {
   return(
-    <LifeCycle />
+    <>
+      <ConditionalRendering />
+    </>
   );
 };
 

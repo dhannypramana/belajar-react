@@ -1,41 +1,29 @@
 import React, { useEffect, useState } from 'react';
+import Counter from '../Counter';
 
 const LifeCycle = () => {
   const [isClick, setIsClick] = useState(false);
   const [count, setCount] = useState(0);
 
-  //replacement for ComponentDidMount
-  useEffect(() => {
-
-  }, []);
-
-  // Replacement for ComponentDidUpdate
-  useEffect(() => {
-
-  }, [count]);
-
-  useEffect(() => {
-
-  });
-
-  // Replacement for ComponentDidUnmount
   useEffect(() => {
     console.log('init carousel');
-
     return () => {
       console.log('destroy carousel');
-    };
-  });
+    }
+  }, [])
 
   return (
     <>
-      <h1 id='hola'>Hello, World!</h1>
-      <button onClick={() => setIsClick(true)}>Click Me</button>
-      <button onClick={() => setCount(count + 1)}>Tambah</button>
-      <p>Count : {count}</p>
+      <div id="hola">Hello, World!</div>
+      <button onClick={() => {
+        setIsClick(true);
+      }}>Click Me</button>
+      <div>
+        <h1>{count}</h1>
+        <button type="submit" onClick={() => setCount(count + 1)}>Klik</button>
+    </div>
     </>
   );
 };
-
 
 export default LifeCycle;
