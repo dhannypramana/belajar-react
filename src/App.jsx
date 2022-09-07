@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import ConditionalRendering from './components/ConditionalRendering';
+import List from './components/List';
 
 const App = () => {
   return(
     <>
-      <ConditionalRendering />
+      <List />
     </>
   );
 };
