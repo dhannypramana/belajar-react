@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Forms from './components/Forms';
+import DataFetching from './components/DataFetching';
 
 const App = () => {
   return(
     <>
-      <Forms />
+      <DataFetching />
     </>
   );
 };
