@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import DataFetching from './components/DataFetching';
+import TodoApp from './components/TodoApp';
 
 const App = () => {
   return(
     <>
-      <DataFetching />
+      <TodoApp />
     </>
   );
 };
