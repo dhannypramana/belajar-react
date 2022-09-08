@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.css';
 
 const TodoApp = () => {
@@ -28,7 +28,7 @@ const TodoApp = () => {
     const filtered = todos.filter(todo => {
       return todo.id !== todoID
     });
-
+    setLoading(true);
     setTodos(filtered);
   };
 
