@@ -6,6 +6,7 @@ const TodoApp = () => {
   const [todos, setTodos] = useState([]);
   const [edit, setEdit] = useState({});
   const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState('');
 
   const generateID = () => {
     return Date.now();
@@ -13,6 +14,7 @@ const TodoApp = () => {
 
   const todoHandler = e => {
     e.preventDefault();
+    setErr('');
     setLoading(true);
 
     if (edit.id) {
@@ -37,7 +39,7 @@ const TodoApp = () => {
     }
 
     if (activity.length === 0) {
-      return;
+      return setErr('Aktivitas tidak boleh kosong');
     } else {
       setTodos([...todos, {
         id: generateID(),
@@ -53,11 +55,17 @@ const TodoApp = () => {
     });
     setLoading(true);
     setTodos(filtered);
+    setEdit({});
+    setActivity('');
   };
 
   const editTodoHandler = todo => {
     setActivity(todo.activity);
     setEdit(todo);
+  };
+
+  const cancelEditHandler = edit => {
+    setActivity(edit.activity);
   };
 
   useEffect(() => {
@@ -69,21 +77,27 @@ const TodoApp = () => {
   return (
     <>
       <h1>Todo App</h1>
+      {err && (<p style={{ color: 'red' }}>{err}</p>)}
       <form onSubmit={todoHandler}>
         <label>Activity</label><br />
         <input type="text" value={activity} onChange={e => setActivity(e.target.value)} placeholder="Add New Activity" className="input-box" />
+        {edit.id && (<button onClick={cancelEditHandler.bind(this, edit)} className='btn'>Cancel</button>)}
         <button className="btn">{edit.id ? 'Edit Activity' : 'Add Activity'}</button>
       </form>
-        <div className="list">
-          <ul>
-            {loading ? (<i>Please Wait...</i>) : 
-              todos.map(item =>
-                <li key={item.id}>{item.activity}
-                  <button style={{ marginLeft: '10px' }} onClick={editTodoHandler.bind(this, item)} className='btn'>Edit</button>
-                  <button className='btn' onClick={deleteTodoHandler.bind(this, item.id)}>Delete</button>
-                </li>)}
-          </ul>
-        </div>
+      {
+        todos.length > 0 ? 
+          <div className="list">
+            <ul>
+              {loading ? (<i>Please Wait...</i>) : 
+                todos.map(item =>
+                  <li key={item.id}>{item.activity}
+                    <button style={{ marginLeft: '10px' }} onClick={editTodoHandler.bind(this, item)} className='btn'>Edit</button>
+                    <button className='btn' onClick={deleteTodoHandler.bind(this, item.id)}>Delete</button>
+                  </li>)}
+            </ul>
+          </div> : 
+          <h3>Tidak Ada Todo</h3>
+      }
     </>
   );
 };
