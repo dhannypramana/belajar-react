@@ -35,4 +35,4 @@ const DataFetch = () => {
   );
 };
 
-export default DataFetch;
+export default DataFetch; 
