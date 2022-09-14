@@ -1,104 +1,119 @@
-import React, { useEffect, useState } from 'react';
-import './index.css';
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import './style.css';
+
+const generateID = () => {
+  return Date.now();
+};
 
 const TodoApp = () => {
   const [activity, setActivity] = useState('');
   const [todos, setTodos] = useState([]);
-  const [edit, setEdit] = useState({});
   const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState('');
+  const [isActivityEmpty, setIsActivityEmpty] = useState(false);
 
-  const generateID = () => {
-    return Date.now();
-  };
+  const [edit, setEdit] = useState([]);
 
-  const todoHandler = e => {
+  const addHandler = e => {
     e.preventDefault();
-    setErr('');
-    setLoading(true);
-
-    if (edit.id) {
-      const updatedTodo = {
-        id: edit.id,
-        activity,
-      };
-
-      const editTodoIndex = todos.findIndex(todo => todo.id === edit.id);
-
-      const updatedTodos = [
-        ...todos
-      ];
-
-      updatedTodos[editTodoIndex] = updatedTodo;
-
-      setTodos(updatedTodos);
-      setActivity('');
-      setEdit({});
-
+    
+    if (activity.length === 0) {
+      setIsActivityEmpty(true);
       return;
     }
 
-    if (activity.length === 0) {
-      return setErr('Aktivitas tidak boleh kosong');
-    } else {
-      setTodos([...todos, {
-        id: generateID(),
+    // Edit Mode
+    if (edit.id) {
+      const filtered = todos.filter(v => v.id !== edit.id);
+      const temp = [...filtered, {
+        id: edit.id,
+        isDone: edit.isDone ? false : true,
         activity,
-      }]);
+      }];
+      setTodos(temp);
+      cancelEditHandler();
+      return;
     }
-    setActivity('');
-  };
 
-  const deleteTodoHandler = todoID => {
-    const filtered = todos.filter(todo => {
-      return todo.id !== todoID
-    });
+    setIsActivityEmpty(false);
+
+    const temp = [...todos, {
+      id: generateID(),
+      isDone: false,
+      activity,
+    }];
+
+    setTodos(temp);
     setLoading(true);
-    setTodos(filtered);
-    setEdit({});
     setActivity('');
   };
 
-  const editTodoHandler = todo => {
-    setActivity(todo.activity);
-    setEdit(todo);
+  const deleteHandler = todoID => {
+    const filtered = todos.filter(e => e.id !== todoID);
+    
+    setLoading(true);
+    setActivity(''); 
+    setTodos(filtered);
+    setEdit([]);
   };
 
-  const cancelEditHandler = edit => {
-    setActivity(edit.activity);
+  const editHandler = activity => {
+    setEdit(activity);
+    setActivity(activity.activity);
+  };
+
+  const cancelEditHandler = () => {
+    setEdit([]);
+    setActivity('');
+    setLoading(true);
+  };
+
+  const doneHandler = todo => {
+    const updatedTodo = {
+      id: todo.id,
+      isDone: todo.isDone ? false : true,
+      activity: todo.activity,
+    };
+
+    const indexEdited = todos.findIndex(v => v.id === todo.id);
+
+    const temp = [
+      ...todos,
+    ];
+
+    temp[indexEdited] = updatedTodo;
+    setTodos(temp);
   };
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 500);
   }, [loading]);
 
   return (
-    <>
+    <div className="todo">
       <h1>Todo App</h1>
-      {err && (<p style={{ color: 'red' }}>{err}</p>)}
-      <form onSubmit={todoHandler}>
-        <label>Activity</label><br />
-        <input type="text" value={activity} onChange={e => setActivity(e.target.value)} placeholder="Add New Activity" className="input-box" />
-        {edit.id && (<button onClick={cancelEditHandler.bind(this, edit)} className='btn'>Cancel</button>)}
-        <button className="btn">{edit.id ? 'Edit Activity' : 'Add Activity'}</button>
+      {isActivityEmpty && (<p style={{ color: 'red' }} >Aktivitas tidak boleh kosong</p>)}
+      <form onSubmit={addHandler}>
+        <label>{edit.id ? 'Edit' : 'Add'} Activity</label><br />
+        <input className="input-box" type="text" onChange={e => setActivity(e.target.value)} value={activity} autoFocus={true} />
+        <button className="btn" type="submit">{edit.id ? 'Edit' : 'Add'} Activity</button>
+        {edit.id && <button className="btn" onClick={cancelEditHandler}>Cancel</button>}
       </form>
-      {
-        todos.length > 0 ? 
-          <div className="list">
-            <ul>
-              {loading ? (<i>Please Wait...</i>) : 
-                todos.map(item =>
-                  <li key={item.id}>{item.activity}
-                    <button style={{ marginLeft: '10px' }} onClick={editTodoHandler.bind(this, item)} className='btn'>Edit</button>
-                    <button className='btn' onClick={deleteTodoHandler.bind(this, item.id)}>Delete</button>
-                  </li>)}
-            </ul>
-          </div> : 
-          <h3>Tidak Ada Todo</h3>
-      }
-    </>
+      {!loading && todos.length === 0 && (<h3>Tidak ada TodoList</h3>)}
+      <ul>
+        {loading ? (<i>Please Wait</i>) : (todos.map(todo => {
+          return <li className="list" key={todo.id}>
+            <input type="checkbox" onChange={doneHandler.bind(this, todo)} checked={todo.isDone ? true : false} />
+            <div className="activity-title">{todo.isDone ? (<del>{todo.activity}</del>) : (todo.activity)} <br /><i>({todo.isDone ? 'Sudah' : 'Belum'} Selesai)</i></div>
+            <button className="btn" onClick={editHandler.bind(this, todo)}>Edit</button>
+            <button className="delete-btn" onClick={deleteHandler.bind(this, todo.id)}>Delete</button>
+          </li>
+        }))}
+      </ul>
+    </div>
   );
 };
 
