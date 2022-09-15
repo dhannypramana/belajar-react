@@ -25,15 +25,22 @@ const TodoApp = () => {
 
     // Edit Mode
     if (edit.id) {
-      const filtered = todos.filter(v => v.id !== edit.id);
-      const temp = [...filtered, {
+      const idx = todos.findIndex(v => v.id === edit.id);
+      
+      const updatedTodos = [
+        ...todos
+      ];
+      
+      const temp = {
         id: edit.id,
-        isDone: edit.isDone ? false : true,
+        isDone: edit.isDone,
         activity,
-      }];
-      setTodos(temp);
-      cancelEditHandler();
-      return;
+      };
+
+      updatedTodos[idx] = temp;
+
+      setTodos(updatedTodos);
+      return cancelEditHandler();
     }
 
     setIsActivityEmpty(false);
@@ -67,17 +74,17 @@ const TodoApp = () => {
     setEdit([]);
     setActivity('');
     setLoading(true);
+    setIsActivityEmpty(false);
   };
 
   const doneHandler = todo => {
     const updatedTodo = {
       id: todo.id,
-      isDone: todo.isDone ? false : true,
       activity: todo.activity,
+      isDone: todo.isDone ? false : true,
     };
 
     const indexEdited = todos.findIndex(v => v.id === todo.id);
-
     const temp = [
       ...todos,
     ];
@@ -94,7 +101,7 @@ const TodoApp = () => {
 
   return (
     <div className="todo">
-      <h1>Todo App</h1>
+      <h3>Todo App</h3>
       {isActivityEmpty && (<p style={{ color: 'red' }} >Aktivitas tidak boleh kosong</p>)}
       <form onSubmit={addHandler}>
         <label>{edit.id ? 'Edit' : 'Add'} Activity</label><br />
@@ -106,7 +113,7 @@ const TodoApp = () => {
       <ul>
         {loading ? (<i>Please Wait</i>) : (todos.map(todo => {
           return <li className="list" key={todo.id}>
-            <input type="checkbox" onChange={doneHandler.bind(this, todo)} checked={todo.isDone ? true : false} />
+            <input value={todo.isDone} type="checkbox" onChange={doneHandler.bind(this, todo)} checked={todo.isDone} disabled={edit.id && true} />
             <div className="activity-title">{todo.isDone ? (<del>{todo.activity}</del>) : (todo.activity)} <br /><i>({todo.isDone ? 'Sudah' : 'Belum'} Selesai)</i></div>
             <button className="btn" onClick={editHandler.bind(this, todo)}>Edit</button>
             <button className="delete-btn" onClick={deleteHandler.bind(this, todo.id)}>Delete</button>

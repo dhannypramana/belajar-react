@@ -1,9 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+* {
+  font-family: 'Quicksand';
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .todo {
-  padding: 20px;
-  /* border: 1px solid white; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .input-box {
@@ -22,6 +34,7 @@ body {
 
 .activity-title {
   width: 250px;
+  margin-left: 5px;
   display: inline-block;
   text-overflow: ellipsis;
 }
